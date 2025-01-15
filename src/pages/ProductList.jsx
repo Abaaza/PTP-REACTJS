@@ -31,7 +31,7 @@ export default function ProductList() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://YOUR-API-ENDPOINT/dev/api/products")
+    fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev//api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
