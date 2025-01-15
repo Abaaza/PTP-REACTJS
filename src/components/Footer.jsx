@@ -1,19 +1,20 @@
+// src/components/Footer.jsx
 import React from "react";
+import { Box, Text } from "@chakra-ui/react";
 
 export default function Footer() {
-  const footerStyle = {
-    backgroundColor: "#343a40",
-    color: "#fff",
-    padding: "1rem",
-    textAlign: "center",
-    marginTop: "auto",
-  };
-
   return (
-    <footer style={footerStyle}>
-      <p style={{ margin: 0 }}>
+    <Box
+      as="footer"
+      bg="gray.800"
+      color="white"
+      py={4}
+      textAlign="center"
+      mt="auto"
+    >
+      <Text mb={0}>
         © {new Date().getFullYear()} Price Tag Pro™. All rights reserved.
-      </p>
-    </footer>
+      </Text>
+    </Box>
   );
 }
