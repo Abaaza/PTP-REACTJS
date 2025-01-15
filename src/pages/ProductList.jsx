@@ -1,4 +1,3 @@
-// src/pages/ProductList.jsx
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -19,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function ProductList() {
+  // State declarations
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,6 +29,7 @@ export default function ProductList() {
   const [distinctBrands, setDistinctBrands] = useState([]);
   const toast = useToast();
 
+  // Fetch products on component mount
   useEffect(() => {
     setLoading(true);
     fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/products")
@@ -38,11 +39,20 @@ export default function ProductList() {
         const brands = [...new Set(data.map((p) => p.brand || ""))];
         setDistinctBrands(brands.filter((b) => b.trim()));
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        toast({
+          title: "Error fetching products",
+          description: "Please try again later",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [toast]);
 
   const handleQuantityChange = (id, val) => {
     setQuantities({ ...quantities, [id]: val });
@@ -52,18 +62,66 @@ export default function ProductList() {
     setSelected({ ...selected, [id]: !selected[id] });
   };
 
-  // Single item print
-  const handlePrintTag = (id) => {
-    const qty = parseInt(quantities[id] || 1, 10);
-    window.open(
-      `https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/pdf/tag/${id}/${qty}`,
-      "_blank"
-    );
+  // Modified single item print function
+  const handlePrintTag = async (id) => {
+    try {
+      console.log('Starting print for product ID:', id);
+      const qty = parseInt(quantities[id] || 1, 10);
+      console.log('Quantity:', qty);
+      
+      const apiEndpoint = `https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/pdf/tag/${id}/${qty}`;
+      console.log('Fetching from URL:', apiEndpoint);
+      
+      const response = await fetch(apiEndpoint, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf',
+        }
+      });
+      
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Create blob from response
+      const blob = await response.blob();
+      console.log('Created blob of size:', blob.size);
+      
+      // Create URL for blob
+      const downloadUrl = window.URL.createObjectURL(blob);
+      
+      // Create temporary link and trigger download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = `product-tag-${id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      toast({
+        title: "Error generating PDF",
+        description: error.message || "Please try again",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
-  // Bulk print for selected items
+  // Modified bulk print function
   const handleBulkPrint = async () => {
+    console.log('Starting bulk print');
     const productIds = Object.keys(selected).filter((id) => selected[id]);
+    console.log('Selected product IDs:', productIds);
+    
     if (!productIds.length) {
       toast({
         title: "No items selected",
@@ -79,31 +137,48 @@ export default function ProductList() {
       qty: parseInt(quantities[id] || 1, 10),
     }));
 
+    console.log('Sending items to server:', items);
+
     try {
-      const res = await fetch(
-        "https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/pdf/print-bulk",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items }),
-        }
-      );
-      if (!res.ok) {
-        toast({
-          title: "Bulk print failed",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        return;
+      const response = await fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/pdf/print-bulk", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/pdf",
+        },
+        body: JSON.stringify({ items }),
+      });
+
+      console.log('Bulk print response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const blob = await res.blob();
-      const fileURL = URL.createObjectURL(blob);
-      window.open(fileURL, "_blank");
-    } catch (err) {
-      console.error(err);
+
+      // Create blob from response
+      const blob = await response.blob();
+      console.log('Created blob of size:', blob.size);
+      
+      // Create URL for blob
+      const downloadUrl = window.URL.createObjectURL(blob);
+      
+      // Create temporary link and trigger download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = 'bulk-tags.pdf';
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('Error downloading bulk PDF:', error);
       toast({
-        title: "Bulk print error",
+        title: "Error generating bulk PDF",
+        description: error.message || "Please try again",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -111,6 +186,8 @@ export default function ProductList() {
     }
   };
 
+  // ... rest of the component remains the same ...
+  
   // Filter and sort
   const filtered = products
     .filter((p) => {
