@@ -23,7 +23,7 @@ export default function UpdateProduct() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/products/${id}`)
+    fetch(`https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/{proxy+}/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setForm({
@@ -71,7 +71,7 @@ export default function UpdateProduct() {
     };
 
     try {
-      const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+      const res = await fetch(`https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/{proxy+}/api/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

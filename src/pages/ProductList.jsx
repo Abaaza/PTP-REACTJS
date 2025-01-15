@@ -21,7 +21,7 @@ export default function ProductList() {
 
   // Fetch products from backend
   useEffect(() => {
-    fetch("http://localhost:4000/api/products")
+    fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/{proxy+}/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -45,7 +45,7 @@ export default function ProductList() {
   // Single item print
   const handlePrintTag = (id) => {
     const qty = parseInt(quantities[id] || 1, 10);
-    window.open(`http://localhost:4000/api/pdf/tag/${id}/${qty}`, "_blank");
+    window.open(`https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/{proxy+}/api/pdf/tag/${id}/${qty}`, "_blank");
   };
 
   // Bulk print for selected items
@@ -65,7 +65,7 @@ export default function ProductList() {
     }));
   
     try {
-      const res = await fetch("http://localhost:4000/api/pdf/print-bulk", {
+      const res = await fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/{proxy+}/api/pdf/print-bulk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items }), // <-- pass as items
