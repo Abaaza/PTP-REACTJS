@@ -6,9 +6,9 @@ frontend:
         - npm install
     build:
       commands:
-        - npm run build # This will create the 'build' folder for create-react-app
+        - npm run build
   artifacts:
-    baseDirectory: build # For create-react-app, it's 'build' not 'dist'
+    baseDirectory: dist # Change this from 'build' to 'dist'
     files:
       - "**/*"
   cache:
