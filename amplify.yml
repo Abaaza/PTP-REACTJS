@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install
+    build:
+      commands:
+        - npm run build # Ensure this generates the 'dist' folder
+  artifacts:
+    baseDirectory: dist # Adjust if your build folder is different
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - node_modules/**/* # Cache node_modules for faster builds
