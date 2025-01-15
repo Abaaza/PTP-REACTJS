@@ -31,7 +31,7 @@ export default function ProductList() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev//api/products")
+    fetch("https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -56,7 +56,7 @@ export default function ProductList() {
   const handlePrintTag = (id) => {
     const qty = parseInt(quantities[id] || 1, 10);
     window.open(
-      `https://YOUR-API-ENDPOINT/dev/api/pdf/tag/${id}/${qty}`,
+      `https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/pdf/tag/${id}/${qty}`,
       "_blank"
     );
   };
@@ -81,7 +81,7 @@ export default function ProductList() {
 
     try {
       const res = await fetch(
-        "https://YOUR-API-ENDPOINT/dev/api/pdf/print-bulk",
+        "https://qxxaz9rivc.execute-api.me-south-1.amazonaws.com/dev/api/pdf/print-bulk",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
