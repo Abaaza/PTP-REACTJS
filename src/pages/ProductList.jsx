@@ -257,8 +257,8 @@ export default function ProductList() {
           onChange={(e) => setSortPrice(e.target.value)}
           width={["100%", "150px"]}
         >
-          <option value="asc">Price Asc</option>
-          <option value="desc">Price Desc</option>
+          <option value="asc">Price low-to-high</option>
+          <option value="desc">Price high-to-low</option>
         </Select>
         <Button colorScheme="gray" onClick={handleBulkPrint}>
           Bulk Print

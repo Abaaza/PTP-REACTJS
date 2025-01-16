@@ -72,15 +72,17 @@ const Navigation = () => {
       <Box display={{ base: 'none', md: 'block' }}>
         {/* Logo Section */}
         <Box borderBottom="1px solid" borderColor="gray.700">
-          <Text
-            fontSize="2xl"
-            fontWeight="bold"
-            color="white"
-            textAlign="center"
-            py={4}
-          >
-            Price Tag Pro
-          </Text>
+        <Link href="/">
+  <Text
+    fontSize="2xl"
+    fontWeight="bold"
+    color="white"
+    textAlign="center"
+    py={4}
+  >
+    Price Tag Pro
+  </Text>
+</Link>
         </Box>
 
         {/* Navigation Section */}
