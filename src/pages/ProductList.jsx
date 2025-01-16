@@ -265,7 +265,7 @@ export default function ProductList() {
         </Button>
       </HStack>
 
-      <Box overflowX="auto">
+      <Box overflowX="auto" mb={4}>
         <Table variant="simple" bg="white">
           <Thead bg="gray.100">
             <Tr>
