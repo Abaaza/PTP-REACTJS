@@ -12,7 +12,7 @@ import {
 
 const Footer = () => {
   return (
-    <Box as="footer" bg="gray.800" color="white" mt="auto" pt={6}>
+<Box as="footer" bg="gray.800" color="white" pt={6}>
 
      
       <Container maxW="container.lg" pb={6}>

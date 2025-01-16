@@ -57,7 +57,7 @@ const HomePage = () => {
               variant="solid"
               size="lg"
             >
-              Download PTP
+              Custom Tags
             </Button>
             <Button
               as="a"
@@ -90,7 +90,7 @@ const HomePage = () => {
           <SimpleGrid columns={[1, 2]} spacing={8}>
             <Box>
               <Heading as="h3" size="md" mb={4}>
-                Free Trial Download!
+                Free Trial 
               </Heading>
               <List spacing={2}>
                 <ListItem>

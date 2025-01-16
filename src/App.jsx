@@ -23,7 +23,7 @@ export default function App() {
         <Box 
           as="main" 
           flex="1" 
-          py={[4, 6, 8]}
+          py={0}  // Change this from py={[4, 6, 8]} to 0
     
           width="100%" 
           maxW="100%"
